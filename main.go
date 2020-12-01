@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -68,15 +69,17 @@ func (s *Searcher) Load(filename string) error {
 		return fmt.Errorf("Load: %w", err)
 	}
 	s.CompleteWorks = string(dat)
-	s.SuffixArray = suffixarray.New(dat)
+	s.SuffixArray = suffixarray.New([]byte(strings.ToLower(s.CompleteWorks)))
 	return nil
 }
 
 func (s *Searcher) Search(query string) []string {
-	idxs := s.SuffixArray.Lookup([]byte(query), -1)
+	idxs := s.SuffixArray.Lookup([]byte(strings.ToLower(query)), -1)
 	results := []string{}
 	for _, idx := range idxs {
-		results = append(results, s.CompleteWorks[idx-250:idx+250])
+		// We can return the position in another key also
+		data := s.CompleteWorks[idx-50:idx] + "<mark>" + s.CompleteWorks[idx:idx+len(query)] + "</mark>" + s.CompleteWorks[idx+len(query):idx+50]
+		results = append(results, data)
 	}
 	return results
 }
