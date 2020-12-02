@@ -14,7 +14,7 @@ const Controller = {
     const table = document.getElementById("table-body");
     const rows = [];
     for (let result of results) {
-      rows.push(`<tr>${result}<tr/>`);
+      rows.push(`<a href="/search?type=prev&idx=${result['prev']}"> prev</a> <tr>${result['data']}<tr/> <a href=/search?type=next&idx=${result['next']}> next</a>`);
     }
     table.innerHTML = rows;
   },
