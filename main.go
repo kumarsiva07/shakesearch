@@ -46,7 +46,7 @@ type Searcher struct {
 func handleLoadMore(searcher Searcher) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		loadType, ok := r.URL.Query()["type"]
-		if !ok || len(loadType[0]) < 1 || (loadType[0] != "prev" && loadType[0] != "nxt") {
+		if !ok || len(loadType[0]) < 1 || (loadType[0] != "prev" && loadType[0] != "next") {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("missing search type in URL params"))
 			return
